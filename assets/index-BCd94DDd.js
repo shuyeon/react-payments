@@ -13487,85 +13487,6 @@ function css() {
   }
   return serializeStyles(args);
 }
-const seperateCard = {
-  visa: "Visa.png",
-  master: "Mastercard.png"
-};
-const PreviewCard = ({
-  cardInformationState,
-  cardType
-}) => {
-  const { uniqueNumber, expirationDate } = cardInformationState;
-  const [MM, YY] = expirationDate;
-  return /* @__PURE__ */ jsxs("div", { css: previewCardStyle, children: [
-    /* @__PURE__ */ jsxs("div", { css: TopStyle, children: [
-      /* @__PURE__ */ jsx$1("div", { css: magneticStyle }),
-      cardType !== "none" && /* @__PURE__ */ jsx$1("img", { css: cardImageStyle, src: seperateCard[cardType], alt: cardType })
-    ] }),
-    /* @__PURE__ */ jsxs("div", { css: cardInformationStyle, children: [
-      /* @__PURE__ */ jsx$1("div", { css: uniqueNumberStyle, children: uniqueNumber.map((number) => {
-        return /* @__PURE__ */ jsx$1("span", { css: numberStyle, children: number });
-      }) }),
-      /* @__PURE__ */ jsxs("span", { css: expirationDateStyle, children: [
-        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: MM }),
-        MM.length === 2 ? " / " : "",
-        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: YY })
-      ] })
-    ] })
-  ] });
-};
-const previewCardStyle = css`
-  width: 212px;
-  height: 132px;
-  border-radius: 4px;
-  background: #333;
-  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.25);
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-`;
-const TopStyle = css`
-  display: flex;
-  justify-content: space-between;
-`;
-const magneticStyle = css`
-  width: 36px;
-  height: 22px;
-  background-color: #ddcd78;
-  stroke-width: 0.5px;
-  stroke: rgba(221, 205, 120, 0.1);
-  border-radius: 4px;
-`;
-const cardImageStyle = css`
-  width: 36px;
-  height: 22px;
-`;
-const cardInformationStyle = css`
-  display: flex;
-  flex-direction: column;
-  padding-left: 7px;
-  gap: 8px;
-  color: #fff;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: 2.24px;
-`;
-const uniqueNumberStyle = css`
-  display: flex;
-  gap: 10px;
-  height: 20px;
-`;
-const numberStyle = css`
-  width: 38px;
-`;
-const dateStyle = css`
-  display: inline-block;
-  width: 22px;
-`;
-const expirationDateStyle = css``;
 const Text = ({ type, text }) => {
   const matchType = {
     title: titleStyle,
@@ -13792,10 +13713,99 @@ const CardInformation = () => {
   }, [cardInformationState.uniqueNumber[0]]);
   return { cardType, cardInformationState, setCardInformationState };
 };
+const seperateCard = {
+  visa: "Visa.png",
+  master: "Mastercard.png"
+};
+const PreviewCard = ({
+  cardInformationState,
+  cardType
+}) => {
+  const { uniqueNumber, expirationDate } = cardInformationState;
+  const [MM, YY] = expirationDate;
+  return /* @__PURE__ */ jsxs("div", { css: previewCardStyle, children: [
+    /* @__PURE__ */ jsxs("div", { css: TopStyle, children: [
+      /* @__PURE__ */ jsx$1("div", { css: magneticStyle }),
+      cardType !== "none" && /* @__PURE__ */ jsx$1("img", { css: cardImageStyle, src: seperateCard[cardType], alt: cardType })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { css: cardInformationStyle, children: [
+      /* @__PURE__ */ jsx$1("div", { css: uniqueNumberStyle, children: uniqueNumber.map((number) => {
+        return /* @__PURE__ */ jsx$1("span", { css: numberStyle, children: number });
+      }) }),
+      /* @__PURE__ */ jsxs("span", { css: expirationDateStyle, children: [
+        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: MM }),
+        MM.length === 2 ? " / " : "",
+        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: YY })
+      ] })
+    ] })
+  ] });
+};
+const previewCardStyle = css`
+  width: 212px;
+  height: 132px;
+  border-radius: 4px;
+  background: #333;
+  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.25);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+`;
+const TopStyle = css`
+  display: flex;
+  justify-content: space-between;
+`;
+const magneticStyle = css`
+  width: 36px;
+  height: 22px;
+  background-color: #ddcd78;
+  stroke-width: 0.5px;
+  stroke: rgba(221, 205, 120, 0.1);
+  border-radius: 4px;
+`;
+const cardImageStyle = css`
+  width: 36px;
+  height: 22px;
+`;
+const cardInformationStyle = css`
+  display: flex;
+  flex-direction: column;
+  padding-left: 7px;
+  gap: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: 2.24px;
+`;
+const uniqueNumberStyle = css`
+  display: flex;
+  gap: 10px;
+  height: 20px;
+`;
+const numberStyle = css`
+  width: 38px;
+`;
+const dateStyle = css`
+  display: inline-block;
+  width: 22px;
+`;
+const expirationDateStyle = css``;
+const PreviewContainer = ({
+  cardInformationState,
+  cardType
+}) => {
+  return /* @__PURE__ */ jsx$1("div", { css: PreviewCardContainerStyle$1, children: /* @__PURE__ */ jsx$1(PreviewCard, { cardInformationState, cardType }) });
+};
+const PreviewCardContainerStyle$1 = css`
+  display: flex;
+  justify-content: center;
+`;
 function App() {
   const { cardType, cardInformationState, setCardInformationState } = CardInformation();
   return /* @__PURE__ */ jsxs("div", { css: AppStyle, children: [
-    /* @__PURE__ */ jsx$1("div", { css: PreviewCardContainerStyle, children: /* @__PURE__ */ jsx$1(PreviewCard, { cardInformationState, cardType }) }),
+    /* @__PURE__ */ jsx$1("div", { css: PreviewCardContainerStyle, children: /* @__PURE__ */ jsx$1(PreviewContainer, { cardInformationState, cardType }) }),
     /* @__PURE__ */ jsx$1(FormContainer, { cardInformationState, setCardInformationState })
   ] });
 }
