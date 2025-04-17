@@ -13657,18 +13657,16 @@ const InputField = ({
       const num = parseInt(value);
       if (index === 0) error = num < 1 || num > 12;
       if (index === 1) {
-        const year = (/* @__PURE__ */ new Date()).getFullYear() % 100;
+        const year = 25;
         error = num < year;
       }
     }
-    if (isNumberOnly) {
-      const updatedValues = [...cardInformation[informationType]];
-      updatedValues[index] = value;
-      setCardInformation({
-        ...cardInformation,
-        [informationType]: updatedValues
-      });
-    }
+    const updatedValues = [...cardInformation[informationType]];
+    updatedValues[index] = value;
+    setCardInformation({
+      ...cardInformation,
+      [informationType]: updatedValues
+    });
     const updatedErrors = [...isErrors[informationType]];
     updatedErrors[index] = error;
     setIsErrors({ ...isErrors, [informationType]: updatedErrors });
@@ -13686,7 +13684,7 @@ const InputField = ({
       },
       index
     )) }),
-    /* @__PURE__ */ jsx$1("div", { css: errorTextWrapperStyle(isErrors[informationType].some((bool) => bool === true)), children: /* @__PURE__ */ jsx$1(Text, { type: "error", text: "숫자만 입력 가능합니다." }) })
+    /* @__PURE__ */ jsx$1("div", { css: errorTextWrapperStyle(isErrors[informationType].some((bool) => bool === true)), children: /* @__PURE__ */ jsx$1(Text, { type: "error", text: "유효하지 않은 값입니다.!" }) })
   ] });
 };
 const inputWrapperStyle = css`
