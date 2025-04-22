@@ -522,11 +522,11 @@ function requireReact_production() {
   react_production.useMemo = function(create, deps) {
     return ReactSharedInternals.H.useMemo(create, deps);
   };
-  react_production.useOptimistic = function(passthrough, reducer) {
-    return ReactSharedInternals.H.useOptimistic(passthrough, reducer);
+  react_production.useOptimistic = function(passthrough, reducer2) {
+    return ReactSharedInternals.H.useOptimistic(passthrough, reducer2);
   };
-  react_production.useReducer = function(reducer, initialArg, init) {
-    return ReactSharedInternals.H.useReducer(reducer, initialArg, init);
+  react_production.useReducer = function(reducer2, initialArg, init) {
+    return ReactSharedInternals.H.useReducer(reducer2, initialArg, init);
   };
   react_production.useRef = function(initialValue) {
     return ReactSharedInternals.H.useRef(initialValue);
@@ -5046,14 +5046,14 @@ function requireReactDomClient_production() {
   function basicStateReducer(state, action) {
     return "function" === typeof action ? action(state) : action;
   }
-  function updateReducer(reducer) {
+  function updateReducer(reducer2) {
     var hook = updateWorkInProgressHook();
-    return updateReducerImpl(hook, currentHook, reducer);
+    return updateReducerImpl(hook, currentHook, reducer2);
   }
-  function updateReducerImpl(hook, current, reducer) {
+  function updateReducerImpl(hook, current, reducer2) {
     var queue = hook.queue;
     if (null === queue) throw Error(formatProdErrorMessage(311));
-    queue.lastRenderedReducer = reducer;
+    queue.lastRenderedReducer = reducer2;
     var baseQueue = hook.baseQueue, pendingQueue = queue.pending;
     if (null !== pendingQueue) {
       if (null !== baseQueue) {
@@ -5096,8 +5096,8 @@ function requireReactDomClient_production() {
               next: null
             }, null === newBaseQueueLast ? (newBaseQueueFirst = newBaseQueueLast = updateLane, baseFirst = pendingQueue) : newBaseQueueLast = newBaseQueueLast.next = updateLane, currentlyRenderingFiber.lanes |= revertLane, workInProgressRootSkippedLanes |= revertLane;
           updateLane = update.action;
-          shouldDoubleInvokeUserFnsInHooksDEV && reducer(pendingQueue, updateLane);
-          pendingQueue = update.hasEagerState ? update.eagerState : reducer(pendingQueue, updateLane);
+          shouldDoubleInvokeUserFnsInHooksDEV && reducer2(pendingQueue, updateLane);
+          pendingQueue = update.hasEagerState ? update.eagerState : reducer2(pendingQueue, updateLane);
         } else
           revertLane = {
             lane: updateLane,
@@ -5110,8 +5110,8 @@ function requireReactDomClient_production() {
         update = update.next;
       } while (null !== update && update !== current);
       null === newBaseQueueLast ? baseFirst = pendingQueue : newBaseQueueLast.next = newBaseQueueFirst;
-      if (!objectIs(pendingQueue, hook.memoizedState) && (didReceiveUpdate = true, didReadFromEntangledAsyncAction$32 && (reducer = currentEntangledActionThenable, null !== reducer)))
-        throw reducer;
+      if (!objectIs(pendingQueue, hook.memoizedState) && (didReceiveUpdate = true, didReadFromEntangledAsyncAction$32 && (reducer2 = currentEntangledActionThenable, null !== reducer2)))
+        throw reducer2;
       hook.memoizedState = pendingQueue;
       hook.baseState = baseFirst;
       hook.baseQueue = newBaseQueueLast;
@@ -5120,16 +5120,16 @@ function requireReactDomClient_production() {
     null === baseQueue && (queue.lanes = 0);
     return [hook.memoizedState, queue.dispatch];
   }
-  function rerenderReducer(reducer) {
+  function rerenderReducer(reducer2) {
     var hook = updateWorkInProgressHook(), queue = hook.queue;
     if (null === queue) throw Error(formatProdErrorMessage(311));
-    queue.lastRenderedReducer = reducer;
+    queue.lastRenderedReducer = reducer2;
     var dispatch = queue.dispatch, lastRenderPhaseUpdate = queue.pending, newState = hook.memoizedState;
     if (null !== lastRenderPhaseUpdate) {
       queue.pending = null;
       var update = lastRenderPhaseUpdate = lastRenderPhaseUpdate.next;
       do
-        newState = reducer(newState, update.action), update = update.next;
+        newState = reducer2(newState, update.action), update = update.next;
       while (update !== lastRenderPhaseUpdate);
       objectIs(newState, hook.memoizedState) || (didReceiveUpdate = true);
       hook.memoizedState = newState;
@@ -5225,12 +5225,12 @@ function requireReactDomClient_production() {
     };
     return hook;
   }
-  function updateOptimisticImpl(hook, current, passthrough, reducer) {
+  function updateOptimisticImpl(hook, current, passthrough, reducer2) {
     hook.baseState = passthrough;
     return updateReducerImpl(
       hook,
       currentHook,
-      "function" === typeof reducer ? reducer : basicStateReducer
+      "function" === typeof reducer2 ? reducer2 : basicStateReducer
     );
   }
   function dispatchActionState(fiber, actionQueue, setPendingState, setState, payload) {
@@ -5820,7 +5820,7 @@ function requireReactDomClient_production() {
       hook.memoizedState = [nextValue, deps];
       return nextValue;
     },
-    useReducer: function(reducer, initialArg, init) {
+    useReducer: function(reducer2, initialArg, init) {
       var hook = mountWorkInProgressHook();
       if (void 0 !== init) {
         var initialState = init(initialArg);
@@ -5834,20 +5834,20 @@ function requireReactDomClient_production() {
         }
       } else initialState = initialArg;
       hook.memoizedState = hook.baseState = initialState;
-      reducer = {
+      reducer2 = {
         pending: null,
         lanes: 0,
         dispatch: null,
-        lastRenderedReducer: reducer,
+        lastRenderedReducer: reducer2,
         lastRenderedState: initialState
       };
-      hook.queue = reducer;
-      reducer = reducer.dispatch = dispatchReducerAction.bind(
+      hook.queue = reducer2;
+      reducer2 = reducer2.dispatch = dispatchReducerAction.bind(
         null,
         currentlyRenderingFiber,
-        reducer
+        reducer2
       );
-      return [hook.memoizedState, reducer];
+      return [hook.memoizedState, reducer2];
     },
     useRef: function(initialValue) {
       var hook = mountWorkInProgressHook();
@@ -5991,9 +5991,9 @@ function requireReactDomClient_production() {
     useHostTransitionStatus,
     useFormState: updateActionState,
     useActionState: updateActionState,
-    useOptimistic: function(passthrough, reducer) {
+    useOptimistic: function(passthrough, reducer2) {
       var hook = updateWorkInProgressHook();
-      return updateOptimisticImpl(hook, currentHook, passthrough, reducer);
+      return updateOptimisticImpl(hook, currentHook, passthrough, reducer2);
     },
     useMemoCache,
     useCacheRefresh: updateRefresh
@@ -6034,10 +6034,10 @@ function requireReactDomClient_production() {
     useHostTransitionStatus,
     useFormState: rerenderActionState,
     useActionState: rerenderActionState,
-    useOptimistic: function(passthrough, reducer) {
+    useOptimistic: function(passthrough, reducer2) {
       var hook = updateWorkInProgressHook();
       if (null !== currentHook)
-        return updateOptimisticImpl(hook, currentHook, passthrough, reducer);
+        return updateOptimisticImpl(hook, currentHook, passthrough, reducer2);
       hook.baseState = passthrough;
       return [passthrough, hook.queue.dispatch];
     },
@@ -13487,52 +13487,16 @@ function css() {
   }
   return serializeStyles(args);
 }
-const Text = ({ type, text }) => {
-  const matchType = {
-    title: titleStyle,
-    description: descriptionStyle,
-    label: labelStyle,
-    error: errorStyle
-  };
-  return /* @__PURE__ */ jsx$1("span", { css: matchType[type], children: text });
-};
-const titleStyle = css`
-  color: #000;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-`;
-const descriptionStyle = css`
-  color: #8b95a1;
-  font-size: 9.5px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-`;
-const labelStyle = css`
-  font-size: 12px;
-  color: #0a0d13;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 15px;
-`;
-const errorStyle = css`
-  color: #ff3d3d;
-  font-size: 9.5px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-`;
-const Input = ({ placeholder, maxLength, value, error, setValue }) => {
+const Input = ({ placeholder, maxLength, value, error, onChange, type }) => {
   return /* @__PURE__ */ jsx$1(
     "input",
     {
       css: inputStyle(error),
-      onChange: (e) => setValue(e.target.value),
+      onChange: (e) => onChange(e.target.value),
       value,
       placeholder,
-      maxLength
+      maxLength,
+      type
     }
   );
 };
@@ -13557,54 +13521,220 @@ const inputStyle = (error) => css`
     outline-color: ${error ? "#FF3D3D" : "#000000"};
   }
 `;
-const InputField = ({
-  label,
-  inputNumber,
-  inputProps,
-  cardInformation,
-  setCardInformation,
-  informationType
-}) => {
-  const [isErrors, setIsErrors] = reactExports.useState({
-    uniqueNumber: [false, false, false, false],
-    expirationDate: [false, false],
-    cvcNumber: [false]
-  });
-  const handleChange = (index, value) => {
-    const isNumberOnly = /^[0-9]*$/.test(value);
-    let error = !isNumberOnly;
-    if (isNumberOnly && informationType === "expirationDate") {
-      const num = parseInt(value);
-      if (index === 0) error = num < 1 || num > 12;
-      if (index === 1) {
-        const year = 25;
-        error = num < year;
-      }
+const Text = ({ text, size = "14px", color = "#000", weight = 400, lineHeight = "normal" }) => {
+  return /* @__PURE__ */ jsx$1("span", { css: textStyle({ size, color, weight, lineHeight }), children: text });
+};
+const textStyle = ({
+  size,
+  color,
+  weight,
+  lineHeight
+}) => css`
+  font-size: ${size};
+  color: ${color};
+  font-weight: ${weight};
+  line-height: ${lineHeight};
+  font-style: normal;
+`;
+const MONTH_MIN = 1;
+const MONTH_MAX = 12;
+const useError = (initialErrorState) => {
+  const [error, setError] = reactExports.useState(initialErrorState);
+  const [errorMessage, setErrorMessage] = reactExports.useState("");
+  const validateInputType = (v, index) => {
+    if (/^[0-9]*$/.test(v)) {
+      setError((prev2) => prev2.map((item, i) => i === index ? false : item));
+      return true;
     }
-    const updatedValues = [...cardInformation[informationType]];
-    updatedValues[index] = value;
-    setCardInformation({
-      ...cardInformation,
-      [informationType]: updatedValues
-    });
-    const updatedErrors = [...isErrors[informationType]];
-    updatedErrors[index] = error;
-    setIsErrors({ ...isErrors, [informationType]: updatedErrors });
+    setError((prev2) => prev2.map((item, i) => i === index ? true : item));
+    setErrorMessage("숫자만 입력해 주세요.");
+    return false;
   };
-  return /* @__PURE__ */ jsxs("div", { css: inputFieldStyle, children: [
-    /* @__PURE__ */ jsx$1(Text, { type: "label", text: label }),
-    /* @__PURE__ */ jsx$1("div", { css: inputWrapperStyle, children: Array.from({ length: inputNumber }).map((_, index) => /* @__PURE__ */ jsx$1(
-      Input,
-      {
-        value: cardInformation[informationType][index] ?? "",
-        setValue: (v) => handleChange(index, v),
-        placeholder: inputProps.placeholder[index],
-        maxLength: inputProps.maxLength,
-        error: isErrors[informationType][index]
-      },
-      index
-    )) }),
-    /* @__PURE__ */ jsx$1("div", { css: errorTextWrapperStyle(isErrors[informationType].some((bool) => bool === true)), children: /* @__PURE__ */ jsx$1(Text, { type: "error", text: "유효하지 않은 값입니다.!" }) })
+  const validateMonth = (v) => {
+    const month = parseInt(v);
+    if (month >= MONTH_MIN && month <= MONTH_MAX) {
+      setError([false, error[1]]);
+      return;
+    }
+    setError([true, error[1]]);
+    setErrorMessage("1~12 사이의 숫자를 입력해 주세요.");
+  };
+  return { error, errorMessage, validateMonth, validateInputType };
+};
+const uniqueNumberSpec = {
+  title: "결제할 카드 번호를 입력해 주세요",
+  description: "본인 명의의 카드만 결제 가능합니다.",
+  inputFieldData: {
+    label: "카드번호",
+    inputNumber: 4,
+    inputProps: { placeholder: ["1234", "1234", "●●●●", "●●●●"], maxLength: 4 }
+  }
+};
+const UniqueNumberForm = ({ uniqueNumberState, dispatch }) => {
+  const { error, errorMessage, validateInputType } = useError([false, false, false, false]);
+  const { title: title2, description: description2, inputFieldData: inputFieldData2 } = uniqueNumberSpec;
+  const { label, inputNumber, inputProps } = inputFieldData2;
+  const handleChange = (v, index) => {
+    if (validateInputType(v, index)) {
+      dispatch({ type: "SET_UNIQUE_NUMBER", index, value: v });
+    }
+  };
+  return /* @__PURE__ */ jsxs("div", { css: FormSectionWrapperStyle$2, children: [
+    /* @__PURE__ */ jsxs("div", { css: TextWrapperStyle$2, children: [
+      /* @__PURE__ */ jsx$1(Text, { text: title2, size: "18px", color: "#000", weight: 700, lineHeight: "normal" }),
+      /* @__PURE__ */ jsx$1(Text, { text: description2, size: "9.5px", color: "#8b95a1", weight: 400, lineHeight: "normal" })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { css: inputFieldStyle$2, children: [
+      /* @__PURE__ */ jsx$1(Text, { text: label, size: "12px", color: "#0a0d13", weight: 500, lineHeight: "15px" }),
+      /* @__PURE__ */ jsx$1("div", { css: inputWrapperStyle$2, children: Array.from({ length: inputNumber }).map((_, index) => {
+        const { placeholder, maxLength } = inputProps;
+        return /* @__PURE__ */ jsx$1(
+          Input,
+          {
+            placeholder: placeholder[index],
+            value: uniqueNumberState[index],
+            maxLength,
+            onChange: (v) => handleChange(v, index),
+            error: error[index],
+            type: index > 1 ? "password" : "text"
+          },
+          index
+        );
+      }) }),
+      /* @__PURE__ */ jsx$1("div", { css: errorTextWrapperStyle$2(error.some((bool) => bool === true)), children: /* @__PURE__ */ jsx$1(Text, { text: errorMessage, size: "9.5px", color: "#ff3d3d", weight: 400, lineHeight: "normal" }) })
+    ] })
+  ] });
+};
+const inputWrapperStyle$2 = css`
+  gap: 10px;
+  width: 100%;
+  display: flex;
+`;
+const inputFieldStyle$2 = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+const errorTextWrapperStyle$2 = (error) => css`
+  opacity: ${error ? "1" : "0"};
+  height: 5px;
+`;
+const TextWrapperStyle$2 = css`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+const FormSectionWrapperStyle$2 = css`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+const expirationDateSpec = {
+  title: "카드 유효기간을 입력해 주세요",
+  description: "월/년도(MMYY)를 순서대로 입력해 주세요.",
+  inputFieldData: {
+    label: "유효기간",
+    inputNumber: 2,
+    inputProps: { placeholder: ["MM", "YY"], maxLength: 2 }
+  }
+};
+const { title, description, inputFieldData } = expirationDateSpec;
+const ExpirationDateForm = ({ expirationDateState, dispatch }) => {
+  const { error, errorMessage, validateInputType, validateMonth } = useError([false, false]);
+  const handleChange = (v, index) => {
+    if (validateInputType(v, index)) {
+      if (index === 0) validateMonth(v);
+      dispatch({ type: "SET_EXPIRATION_DATE", index, value: v });
+      return;
+    }
+  };
+  return /* @__PURE__ */ jsxs("div", { css: FormSectionWrapperStyle$1, children: [
+    /* @__PURE__ */ jsxs("div", { css: TextWrapperStyle$1, children: [
+      /* @__PURE__ */ jsx$1(Text, { text: title, size: "18px", color: "#000", weight: 700, lineHeight: "normal" }),
+      /* @__PURE__ */ jsx$1(Text, { text: description, size: "9.5px", color: "#8b95a1", weight: 400, lineHeight: "normal" })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { css: inputFieldStyle$1, children: [
+      /* @__PURE__ */ jsx$1(Text, { text: inputFieldData.label, size: "12px", color: "#0a0d13", weight: 500, lineHeight: "15px" }),
+      /* @__PURE__ */ jsx$1("div", { css: inputWrapperStyle$1, children: Array.from({ length: inputFieldData.inputNumber }).map((_, index) => {
+        const { placeholder, maxLength } = inputFieldData.inputProps;
+        return /* @__PURE__ */ jsx$1(
+          Input,
+          {
+            placeholder: placeholder[index],
+            value: expirationDateState[index],
+            onChange: (v) => handleChange(v, index),
+            maxLength,
+            error: error[index]
+          }
+        );
+      }) }),
+      /* @__PURE__ */ jsx$1("div", { css: errorTextWrapperStyle$1(error[0] || error[1]), children: /* @__PURE__ */ jsx$1(Text, { text: errorMessage, size: "9.5px", color: "#ff3d3d", weight: 400, lineHeight: "normal" }) })
+    ] })
+  ] });
+};
+const inputWrapperStyle$1 = css`
+  gap: 10px;
+  width: 100%;
+  display: flex;
+`;
+const inputFieldStyle$1 = css`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+const errorTextWrapperStyle$1 = (error) => css`
+  opacity: ${error ? "1" : "0"};
+  height: 5px;
+`;
+const TextWrapperStyle$1 = css`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+const FormSectionWrapperStyle$1 = css`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+const cvcNumberSpec = {
+  title: "CVC 번호를 입력해 주세요",
+  description: "",
+  inputFieldData: {
+    label: "cvc",
+    inputProps: { placeholder: ["123"], maxLength: 3 }
+  }
+};
+const CvcNumberForm = ({ cvcNumberState, dispatch }) => {
+  const { error, errorMessage, validateInputType } = useError([false]);
+  const { title: title2, description: description2, inputFieldData: inputFieldData2 } = cvcNumberSpec;
+  const { label, inputProps } = inputFieldData2;
+  const { placeholder, maxLength } = inputProps;
+  const handleChange = (value) => {
+    if (validateInputType(value, 0)) {
+      dispatch({ type: "SET_CVC_NUMBER", value });
+    }
+  };
+  return /* @__PURE__ */ jsxs("div", { css: FormSectionWrapperStyle, children: [
+    /* @__PURE__ */ jsxs("div", { css: TextWrapperStyle, children: [
+      /* @__PURE__ */ jsx$1(Text, { text: title2, size: "18px", color: "#000", weight: 700, lineHeight: "normal" }),
+      /* @__PURE__ */ jsx$1(Text, { text: description2, size: "9.5px", color: "#8b95a1", weight: 400, lineHeight: "normal" })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { css: inputFieldStyle, children: [
+      /* @__PURE__ */ jsx$1(Text, { text: label, size: "12px", color: "#0a0d13", weight: 500, lineHeight: "15px" }),
+      /* @__PURE__ */ jsx$1("div", { css: inputWrapperStyle, children: /* @__PURE__ */ jsx$1(
+        Input,
+        {
+          placeholder: placeholder[0],
+          maxLength,
+          value: cvcNumberState[0],
+          onChange: (v) => handleChange(v),
+          error: error[0]
+        }
+      ) }),
+      /* @__PURE__ */ jsx$1("div", { css: errorTextWrapperStyle(error[0]), children: /* @__PURE__ */ jsx$1(Text, { text: errorMessage, size: "9.5px", color: "#ff3d3d", weight: 400, lineHeight: "normal" }) })
+    ] })
   ] });
 };
 const inputWrapperStyle = css`
@@ -13620,16 +13750,8 @@ const inputFieldStyle = css`
 `;
 const errorTextWrapperStyle = (error) => css`
   opacity: ${error ? "1" : "0"};
+  height: 5px;
 `;
-const FormSection = ({ title, description, inputFieldData }) => {
-  return /* @__PURE__ */ jsxs("div", { css: FormSectionWrapperStyle, children: [
-    /* @__PURE__ */ jsxs("div", { css: TextWrapperStyle, children: [
-      /* @__PURE__ */ jsx$1(Text, { type: "title", text: title }),
-      /* @__PURE__ */ jsx$1(Text, { type: "description", text: description })
-    ] }),
-    /* @__PURE__ */ jsx$1(InputField, { ...inputFieldData })
-  ] });
-};
 const TextWrapperStyle = css`
   display: flex;
   flex-direction: column;
@@ -13640,102 +13762,71 @@ const FormSectionWrapperStyle = css`
   flex-direction: column;
   gap: 16px;
 `;
-const UIControllerData = {
-  uniqueNumber: {
-    title: "결제할 카드 번호를 입력해 주세요",
-    description: "본인 명의의 카드만 결제 가능합니다.",
-    inputFieldData: {
-      label: "카드번호",
-      inputNumber: 4,
-      inputProps: { placeholder: ["1234", "1234", "1234", "1234"], maxLength: 4 }
-    }
-  },
-  expirationDate: {
-    title: "카드 유효기간을 입력해 주세요",
-    description: "월/년도(MMYY)를 순서대로 입력해 주세요.",
-    inputFieldData: {
-      label: "유효기간",
-      inputNumber: 2,
-      inputProps: { placeholder: ["MM", "YY"], maxLength: 2 }
-    }
-  },
-  cvcNumber: {
-    title: "CVC 번호를 입력해 주세요",
-    description: "",
-    inputFieldData: {
-      label: "cvc",
-      inputNumber: 1,
-      inputProps: { placeholder: ["123"], maxLength: 3 }
-    }
-  }
-};
-const FormContainer = ({ cardInformationState, setCardInformationState }) => {
-  return /* @__PURE__ */ jsx$1("div", { css: FormContainerStyle, children: Object.keys(cardInformationState).map((key) => {
-    const formSectionData = UIControllerData[key];
-    return /* @__PURE__ */ jsx$1(
-      FormSection,
-      {
-        title: formSectionData.title,
-        description: formSectionData.description,
-        inputFieldData: {
-          ...formSectionData.inputFieldData,
-          cardInformation: cardInformationState,
-          setCardInformation: setCardInformationState,
-          informationType: key
-        }
-      }
-    );
-  }) });
+const FormContainer = ({ cardState, dispatch }) => {
+  const { uniqueNumber, expirationDate, cvcNumber } = cardState;
+  return /* @__PURE__ */ jsxs("div", { css: FormContainerStyle, children: [
+    /* @__PURE__ */ jsx$1(UniqueNumberForm, { uniqueNumberState: uniqueNumber, dispatch }),
+    /* @__PURE__ */ jsx$1(ExpirationDateForm, { expirationDateState: expirationDate, dispatch }),
+    /* @__PURE__ */ jsx$1(CvcNumberForm, { cvcNumberState: cvcNumber, dispatch })
+  ] });
 };
 const FormContainerStyle = css`
   display: flex;
   flex-direction: column;
   gap: 16px;
 `;
-const CardInformation = () => {
-  const initialCardInformation = {
-    uniqueNumber: ["", "", "", ""],
-    expirationDate: ["", ""],
-    cvcNumber: [""]
-  };
-  const [cardInformationState, setCardInformationState] = reactExports.useState(initialCardInformation);
-  const [cardType, setCardType] = reactExports.useState("none");
-  reactExports.useEffect(() => {
-    const first = cardInformationState.uniqueNumber[0];
-    const bin = first.slice(0, 2);
-    if (first.startsWith("4")) {
-      setCardType("visa");
-    } else if (/^5[1-5]/.test(bin)) {
-      setCardType("master");
-    } else {
-      setCardType("none");
+const initialCardInfo = {
+  uniqueNumber: ["", "", "", ""],
+  expirationDate: ["", ""],
+  cvcNumber: [""]
+};
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_UNIQUE_NUMBER": {
+      const updated = [...state.uniqueNumber];
+      updated[action.index] = action.value;
+      return { ...state, uniqueNumber: updated };
     }
-  }, [cardInformationState.uniqueNumber[0]]);
-  return { cardType, cardInformationState, setCardInformationState };
+    case "SET_EXPIRATION_DATE": {
+      const updated = [...state.expirationDate];
+      updated[action.index] = action.value;
+      return { ...state, expirationDate: updated };
+    }
+    case "SET_CVC_NUMBER":
+      return { ...state, cvcNumber: [action.value] };
+    default:
+      return state;
+  }
+}
+const useCardInformation = () => {
+  const [cardState, dispatch] = reactExports.useReducer(reducer, initialCardInfo);
+  return { cardState, dispatch };
 };
 const seperateCard = {
   visa: "Visa.png",
   master: "Mastercard.png"
 };
-const PreviewCard = ({
-  cardInformationState,
-  cardType
-}) => {
-  const { uniqueNumber, expirationDate } = cardInformationState;
-  const [MM, YY] = expirationDate;
+const PreviewCard = ({ uniqueNumber, expirationDate }) => {
+  function getCardType(cardNumber) {
+    const bin = cardNumber.slice(0, 2);
+    if (cardNumber.startsWith("4")) return "visa";
+    if (/^5[1-5]/.test(bin)) return "master";
+    return "none";
+  }
+  const cardType = getCardType(uniqueNumber[0]);
   return /* @__PURE__ */ jsxs("div", { css: previewCardStyle, children: [
     /* @__PURE__ */ jsxs("div", { css: TopStyle, children: [
       /* @__PURE__ */ jsx$1("div", { css: magneticStyle }),
       cardType !== "none" && /* @__PURE__ */ jsx$1("img", { css: cardImageStyle, src: seperateCard[cardType], alt: cardType })
     ] }),
     /* @__PURE__ */ jsxs("div", { css: cardInformationStyle, children: [
-      /* @__PURE__ */ jsx$1("div", { css: uniqueNumberStyle, children: uniqueNumber.map((number) => {
-        return /* @__PURE__ */ jsx$1("span", { css: numberStyle, children: number });
+      /* @__PURE__ */ jsx$1("div", { css: uniqueNumberStyle, children: uniqueNumber.map((number, index) => {
+        return /* @__PURE__ */ jsx$1("span", { css: numberStyle, children: index === 2 || index === 3 ? Array(number.length).fill("*").map((dot, idx) => /* @__PURE__ */ jsx$1("span", { children: dot }, idx)) : number }, index);
       }) }),
       /* @__PURE__ */ jsxs("span", { css: expirationDateStyle, children: [
-        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: MM }),
-        MM.length === 2 ? " / " : "",
-        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: YY })
+        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: expirationDate[0] }),
+        expirationDate[0].length === 2 ? " / " : "",
+        /* @__PURE__ */ jsx$1("span", { css: dateStyle, children: expirationDate[1] })
       ] })
     ] })
   ] });
@@ -13792,21 +13883,11 @@ const dateStyle = css`
   width: 22px;
 `;
 const expirationDateStyle = css``;
-const PreviewContainer = ({
-  cardInformationState,
-  cardType
-}) => {
-  return /* @__PURE__ */ jsx$1("div", { css: PreviewCardContainerStyle$1, children: /* @__PURE__ */ jsx$1(PreviewCard, { cardInformationState, cardType }) });
-};
-const PreviewCardContainerStyle$1 = css`
-  display: flex;
-  justify-content: center;
-`;
 function App() {
-  const { cardType, cardInformationState, setCardInformationState } = CardInformation();
+  const { cardState, dispatch } = useCardInformation();
   return /* @__PURE__ */ jsxs("div", { css: AppStyle, children: [
-    /* @__PURE__ */ jsx$1("div", { css: PreviewCardContainerStyle, children: /* @__PURE__ */ jsx$1(PreviewContainer, { cardInformationState, cardType }) }),
-    /* @__PURE__ */ jsx$1(FormContainer, { cardInformationState, setCardInformationState })
+    /* @__PURE__ */ jsx$1(PreviewCard, { uniqueNumber: cardState.uniqueNumber, expirationDate: cardState.expirationDate }),
+    /* @__PURE__ */ jsx$1(FormContainer, { cardState, dispatch })
   ] });
 }
 const AppStyle = css`
@@ -13815,12 +13896,9 @@ const AppStyle = css`
   padding: 77px 30px 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 45px;
   border-radius: 20px;
-`;
-const PreviewCardContainerStyle = css`
-  display: flex;
-  justify-content: center;
 `;
 ReactDOM.createRoot(document.getElementById("root")).render(
   /* @__PURE__ */ jsx$1(React.StrictMode, { children: /* @__PURE__ */ jsx$1(App, {}) })
