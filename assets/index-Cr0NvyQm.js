@@ -16454,11 +16454,6 @@ const buttonStyle = (rounded) => css`
   &:active {
     background-color: gray;
   }
-
-  &:disabled {
-    background-color: #c4c4c4;
-    cursor: not-allowed;
-  }
 `;
 const OPEN_SEQUENCE = ["uniqueNumber", "cardIssuer", "expirationDate", "cvcNumber", "password"];
 const useOpenForm = ({
@@ -16678,22 +16673,22 @@ const CardResistrationCompletePage = () => {
   return /* @__PURE__ */ jsxs("div", { css: AppStyle, children: [
     /* @__PURE__ */ jsx$1("img", { css: IconStyle, src: "check.svg" }),
     /* @__PURE__ */ jsxs("div", { css: TextWrapper, children: [
-      /* @__PURE__ */ jsx$1(Text, { text: `${cardState.uniqueNumber[0]}로 시작하는`, weight: "700", size: "30px" }),
-      /* @__PURE__ */ jsx$1(Text, { text: `${cardState.cardIssuer}가 등록되었어요.`, weight: "700", size: "30px" })
+      /* @__PURE__ */ jsx$1(Text, { text: `${cardState.uniqueNumber[0]}로 시작하는`, weight: "700", size: "25px" }),
+      /* @__PURE__ */ jsx$1(Text, { text: `${cardState.cardIssuer}가 등록되었어요.`, weight: "700", size: "25px" })
     ] }),
     /* @__PURE__ */ jsx$1(Button, { text: "확인", rounded: true, onClick: handleButtonClick })
   ] });
 };
 const AppStyle = css`
   width: 376px;
-  height: 590px;
+  height: 650px;
+  padding: 20px 30px;
   background-color: #ffffff;
-  padding:10px; 8px 20px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 45px;
+  gap: 30px;
   border-radius: 20px;
   position: relative;
 `;
@@ -16704,7 +16699,7 @@ const TextWrapper = css`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 `;
 function App() {
   return /* @__PURE__ */ jsx$1(HashRouter, { children: /* @__PURE__ */ jsxs(Routes, { children: [
